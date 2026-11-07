@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+results/
+logs/
+figs/
+long_table.csv
+summary_full.txt
+tables.json
+paper.docx

@@ -1,0 +1,8 @@
+# Versions used to produce the paper's results (Python 3.13). Newer versions should work.
+numpy>=2.0
+scipy>=1.13
+pandas>=2.2
+matplotlib>=3.9
+# Only for step 7 (build_docx.py); pandoc must also be installed on the system
+python-docx>=1.1
+lxml>=5.0
