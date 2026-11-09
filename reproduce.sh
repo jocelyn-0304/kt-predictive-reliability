@@ -3,7 +3,7 @@
 #   bash reproduce.sh quick    recompute all metrics, intervals, tables and figures from the saved predictions
 #                              in results/ and results_ctrl/ (about 5 minutes)
 #   bash reproduce.sh full     simulate the data and fit every model from the seeds, then run the analysis
-#                              (results/ and results_ctrl/ must be empty or absent; about 40 minutes on 2 CPU cores)
+#                              (results/ and results_ctrl/ must be empty or absent; about 40-45 minutes on 2 CPU cores)
 #   bash reproduce.sh verify   move the saved predictions aside, rerun everything from the seeds, check that the new
 #                              predictions are identical to the saved ones, then run the analysis
 set -euo pipefail

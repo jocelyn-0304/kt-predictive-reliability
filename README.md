@@ -9,7 +9,7 @@ data are used or needed.
 ```bash
 pip install -r requirements.txt
 bash reproduce.sh quick     # about 5 minutes: metrics, bootstrap intervals, Tables 1-4 and Figures 1-3 from the saved predictions
-bash reproduce.sh verify    # about 40 minutes on 2 CPU cores: rerun everything from the seeds and check it against the saved predictions
+bash reproduce.sh verify    # about 40-45 minutes on 2 CPU cores: rerun everything from the seeds and check it against the saved predictions
 ```
 
 `bash reproduce.sh full` reruns from the seeds without the comparison (it needs empty `results/` and `results_ctrl/`); use it when the saved predictions are not included in your copy.
@@ -51,6 +51,10 @@ With the library versions below, rerunning from the seeds reproduces the saved p
 refits the test-only models and the clean window reference and compares 102 prediction arrays per replicate with
 `results/`; the maximum absolute difference was 0 in all ten replicates. Other library versions may change the last
 digits of some numbers.
+
+A complete rerun with `bash reproduce.sh verify` (42 minutes on 2 CPU cores) selected the same hyperparameters,
+reproduced all 2,260 saved arrays in `results/` and all 3,710 in `results_ctrl/` exactly (maximum absolute difference 0),
+and rebuilt identical summaries, tables and figures; only the training times recorded in `tables.json` differ.
 
 Environment used for the paper: Python 3.13, NumPy 2.5.3, SciPy 1.18.1, pandas 3.0.5, matplotlib 3.11.2
 (`requirements.txt`). No GPU is needed.
