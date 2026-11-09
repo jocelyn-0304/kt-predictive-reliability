@@ -1,9 +1,9 @@
 __pycache__/
 *.pyc
-results/
+*.tmp.npz
 logs/
-figs/
 long_table.csv
-summary_full.txt
-tables.json
-paper.docx
+quick.log
+*.docx
+results_published/
+results_ctrl_published/

@@ -1,0 +1,17 @@
+Component,Setting
+Learners and items,"3,000 learners × 60 interactions per replicate; 200 items in 10 skills; five replicates (seeds 1–5); separate development replicate (seed 9001) for hyperparameters"
+Splits (by learner),"Training 60% (1,800), validation 15% (450), calibration 10% (300), test 15% (450)"
+Target events,"Events 50–59 of each test learner (4,500 per replicate), identical for every condition"
+Generators,"Synthetic-KT-A: two-state learning, forgetting, guessing, slipping (Eq. 1). Synthetic-KT-B: dynamic item response process with asymptotes (Eq. 2)"
+Guess g / slip s,"Centre (0.20, 0.15); g = 0.10, 0.30 with s = 0.15; s = 0.05, 0.25 with g = 0.20"
+History length L,"3, 5, 10, 20, 50 (centre configuration); 3, 10, 50 (other configurations)"
+History label flips η,"0, 0.05, 0.10, 0.20 (centre configuration); 0, 0.10, 0.20 at L = 50 (other configurations)"
+Training settings,"Test-only shift (all models; full-sequence loss for DKT and AKT-style); matched training with the window loss (DKT, AKT-style; centre configuration)"
+Control comparisons,"Centre configuration: DKT-item; clean window reference (L = 50, targets 50–59); position-matched windows (L = 3–20, targets 50–59); early targets (event L with its complete history)"
+Baseline,"Uses the target item only. Smoothed item accuracy; α = 50 (KT-A), 10 (KT-B)"
+BKT with forgetting,"Uses the target skill and the visible responses on that skill. Per-skill initial mastery, learning, forgetting (≤ 0.3), guess, slip; upper bound on g and s 0.3 (KT-A), 0.5 (KT-B)"
+2PL-IRT,Uses the identities of the visible and target items and all visible responses. Item discrimination and difficulty (MAP); SD of log-discrimination 0.3 (both)
+DKT,"Uses the skill and response of each visible event and the target skill. GRU; token embedding 24; hidden size 32 (KT-A), 64 (KT-B); learning rate 0.01"
+AKT-style,"Uses skills, one difficulty value per item, and all visible responses. Rasch-type embeddings 16 (both); attention with distance decay; head width 32; learning rate 0.01"
+DKT-item (control),"As DKT, with one output per item (the target item’s entry is used). Hidden size 64 (KT-A), 16 (KT-B); learning rate 0.003"
+Neural training,"Adam; batch 64; weight decay 1e-5; gradient clipping 5; at most 40 epochs; early stopping (patience 5) on validation NLL. Full-sequence loss: 108,000 predictions per epoch; window loss: 6,000 windows per epoch"

@@ -8,6 +8,7 @@ from analyze import *
 plt.rcParams.update({"font.family": "Liberation Serif", "font.size": 8, "axes.linewidth": 0.7, "axes.spines.top": False,
                      "axes.spines.right": False, "xtick.major.width": 0.7, "ytick.major.width": 0.7})
 COL = {"Baseline": "#2a78d6", "BKT": "#eb6834", "2PL-IRT": "#1baf7a", "DKT": "#6250d6", "AKT": "#e87ba4"}
+NAME = {"AKT": "AKT-style"}
 MRK = {"Baseline": "o", "BKT": "s", "2PL-IRT": "^", "DKT": "D", "AKT": "v"}
 LS = {"Baseline": ":", "BKT": "-", "2PL-IRT": "--", "DKT": "-.", "AKT": "-"}
 MECH = {"A": "Synthetic-KT-A", "B": "Synthetic-KT-B"}
@@ -36,7 +37,7 @@ for r, mech in enumerate("AB"):
         for mo in MODELS:
             cnt, sp, sy = pooled_bins(mech, mo, L, eta)
             ok = cnt >= MINN
-            ax.plot(sp[ok] / cnt[ok], sy[ok] / cnt[ok], color=COL[mo], marker=MRK[mo], ms=3.6, lw=1.1, ls=LS[mo], mec="white", mew=0.4, label=mo, zorder=3)
+            ax.plot(sp[ok] / cnt[ok], sy[ok] / cnt[ok], color=COL[mo], marker=MRK[mo], ms=3.6, lw=1.1, ls=LS[mo], mec="white", mew=0.4, label=NAME.get(mo, mo), zorder=3)
         ax.set_xlim(0.1, 0.95); ax.set_ylim(0.1, 0.95)
         ax.set_title(f"{MECH[mech]}\n{ttl}", fontsize=7.6)
         ax.grid(color="#e6e5e0", lw=0.5)
@@ -74,7 +75,7 @@ for r_, mech in enumerate("AB"):
             hi = m + (np.array([res[f"{mech}|{mo}|{L}"][met][2] for L in Ls]) - bm)
             xo = x + (i - 2) * 0.06
             ax.errorbar(xo, m, yerr=[m - lo, hi - m], color=COL[mo], marker=MRK[mo], ms=3.4, lw=1.0, ls=LS[mo], elinewidth=0.6, capsize=1.2,
-                        mec="white", mew=0.3, label=mo)
+                        mec="white", mew=0.3, label=NAME.get(mo, mo))
         ax.set_xticks(x); ax.set_xticklabels([str(L) for L in Ls])
         ax.grid(color="#e6e5e0", lw=0.5)
         if r_ == 0: ax.set_title(lab, fontsize=8)

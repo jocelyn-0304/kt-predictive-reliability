@@ -95,6 +95,7 @@ def boot_metrics(p, y, sidx, Wb, metrics=("auc", "brier", "nll", "ece10", "hc_er
     out = {}
     pc = np.clip(p, EPS, 1 - EPS)
     if "brier" in metrics: out["brier"] = (w * (p - y) ** 2).sum(1) / sw
+    if "citl" in metrics: out["citl"] = (w * (p - y)).sum(1) / sw       # mean prediction minus observed proportion
     if "nll" in metrics: out["nll"] = (w * -(y * np.log(pc) + (1 - y) * np.log(1 - pc))).sum(1) / sw
     if "ece10" in metrics:
         b = np.minimum((p * 10).astype(int), 9); oh = np.eye(10)[b]

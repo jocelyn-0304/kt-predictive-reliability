@@ -1,0 +1,12 @@
+| Generator | Model | n L=50 eta=0 | error L=50 eta=0 | n L=3 eta=0 | error L=3 eta=0 | n L=50 eta=0.20 | error L=50 eta=0.20 | n L=50 eta=0 s=0.05 | error L=50 eta=0 s=0.05 |
+|---|---|---|---|---|---|---|---|---|---|
+| Synthetic-KT-A | Baseline | 0 | NA | 0 | NA | 0 | NA | 0 | NA |
+| Synthetic-KT-A | BKT | 0 | NA | 0 | NA | 0 | NA | 9915 | 0.079 |
+| Synthetic-KT-A | 2PL-IRT | 82 | 0.159 | 77 | 0.182 | 3 | 0.000 | 590 | 0.159 |
+| Synthetic-KT-A | DKT | 392 | 0.166 | 0 | NA | 177 | 0.186 | 6896 | 0.065 |
+| Synthetic-KT-A | AKT-style | 13 | 0.154 | 33 | 0.303 | 8 | 0.125 | 5451 | 0.070 |
+| Synthetic-KT-B | Baseline | 0 | NA | 0 | NA | 0 | NA | 65 | 0.062 |
+| Synthetic-KT-B | BKT | 0 | NA | 0 | NA | 0 | NA | 0 | NA |
+| Synthetic-KT-B | 2PL-IRT | 266 | 0.120 | 342 | 0.187 | 22 | 0.136 | 1701 | 0.076 |
+| Synthetic-KT-B | DKT | 0 | NA | 0 | NA | 0 | NA | 34 | 0.118 |
+| Synthetic-KT-B | AKT-style | 2 | 0.000 | 18 | 0.056 | 2 | 0.000 | 803 | 0.052 |

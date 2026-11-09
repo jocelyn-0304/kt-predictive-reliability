@@ -9,6 +9,7 @@ class DKT:
     """Deep knowledge tracing (Piech et al., 2015) with a GRU: input = (skill, response) token,
     output = per-skill probability of a correct response; the entry of the target skill is used."""
     name = "DKT"
+    out_by_item = False
 
     def __init__(self, K, n_items, E=24, H=32, seed=0):
         rng = np.random.default_rng(seed)
@@ -36,7 +37,20 @@ class DKT:
             h = ad.gru_cell(xp, t, h, self.Wh, self.bh)
         Hs = ad.stack(hs, axis=1)
         logits = ad.matmul(Hs, self.Wo) + self.bo
-        return ad.gather_last(logits, skills)
+        return ad.gather_last(logits, items if self.out_by_item else skills)
+
+
+class DKTItem(DKT):
+    """Control variant: DKT with skill (KC) inputs and one output per item; the entry of the target item is used.
+    Skill inputs with item outputs was the combination that worked best on most datasets in Gervet et al. (2020)."""
+    name = "DKT-item"
+    out_by_item = True
+
+    def __init__(self, K, n_items, E=24, H=32, seed=0):
+        super().__init__(K, n_items, E=E, H=H, seed=seed)
+        rng = np.random.default_rng(seed + 2000)
+        self.Wo = param((H, n_items), rng)
+        self.bo = param((n_items,), rng, kind="zeros")
 
 
 class AKT:
@@ -127,14 +141,16 @@ def corrupt_history(resp_hist, eta, u):
     return np.where(flip, 1 - resp_hist, resp_hist)
 
 
-def train_neural(model, tr, va, cfg, seed, mode="full", L=None, eta=0.0, verbose=False):
+def train_neural(model, tr, va, cfg, seed, mode="full", L=None, eta=0.0, verbose=False, tpos=None):
     """Train on clean next-response labels.
     tr/va = (items, skills, resp) full sequences (N,T).
     mode='full'  : teacher-forced loss at every position (standard KT training).
     mode='window': loss only at the last position of random windows with exactly L history events
                    (training distribution matched to test-time truncation).
     eta: label-flip rate applied to *input* histories during training (matched corruption);
-         the targets used in the loss are always the clean responses."""
+         the targets used in the loss are always the clean responses.
+    tpos: optional array of allowed target positions for mode='window' (training and validation windows);
+          default None = every position from L to the end of the sequence."""
     rng = np.random.default_rng(seed + 7)
     opt = ad.Adam(model.params(), lr=cfg["lr"], wd=cfg.get("wd", 1e-5), clip=5.0)
     bs = cfg.get("bs", 64)
@@ -146,7 +162,7 @@ def train_neural(model, tr, va, cfg, seed, mode="full", L=None, eta=0.0, verbose
             u = np.random.default_rng(seed + 99).random(rs.shape)
             rin = corrupt_history(rs, eta, u) if eta > 0 else rs
             return it, sk, rin, rs, np.ones_like(rs, dtype=ad.DT)
-        tg = np.arange(L, Ttr, max(1, (Ttr - L) // 6))
+        tg = np.arange(L, Ttr, max(1, (Ttr - L) // 6)) if tpos is None else np.asarray(tpos)
         it, sk, rs, _ = make_windows(*va, L, tg)
         u = np.random.default_rng(seed + 99).random(rs.shape)
         rin = rs.copy()
@@ -178,7 +194,7 @@ def train_neural(model, tr, va, cfg, seed, mode="full", L=None, eta=0.0, verbose
             batches = [order[i:i + bs] for i in range(0, len(order), bs)]
         else:
             nS = len(tr[1])
-            tg_all = np.arange(L, Ttr)
+            tg_all = np.arange(L, Ttr) if tpos is None else np.asarray(tpos)
             m = min(cfg.get("win_per_epoch", 6000), nS * len(tg_all))
             s_idx = rng.integers(0, nS, m)
             t_idx = rng.choice(tg_all, m)

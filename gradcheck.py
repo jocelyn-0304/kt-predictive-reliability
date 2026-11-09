@@ -1,11 +1,11 @@
 import numpy as np, autodiff as ad
 ad.set_dtype(np.float64)
-from neural import DKT, AKT
+from neural import DKT, DKTItem, AKT
 rng = np.random.default_rng(0)
 B,T,K,NI = 5,7,3,12
 skills = rng.integers(0,K,(B,T)); items = rng.integers(0,NI,(B,T)); resp = rng.integers(0,2,(B,T))
 w = rng.random((B,T)); y = resp.astype(float)
-for M in (DKT, AKT):
+for M in (DKT, AKT, DKTItem):
     m = M(K, NI, seed=3)
     def loss():
         return ad.bce_logits(m.forward(items, skills, resp), y, w)

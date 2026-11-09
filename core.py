@@ -4,7 +4,7 @@ from scipy.optimize import minimize_scalar
 import autodiff as ad
 from simulate import simulate, split_students, subset
 from classical import ItemMean, BKT, IRT2PL
-from neural import DKT, AKT, make_windows, predict_logits, corrupt_history, train_neural
+from neural import DKT, DKTItem, AKT, make_windows, predict_logits, corrupt_history, train_neural
 
 TARGETS = np.arange(50, 60)       # fixed target events (identical for every history length)
 EPS = 1e-6
@@ -54,11 +54,14 @@ def build_classical(tr, nI, hp):
 def new_neural(name, K, nI, hp, seed):
     if name == "DKT":
         return DKT(K, nI, E=24, H=hp["dkt_H"], seed=seed)
+    if name == "DKT-item":
+        return DKTItem(K, nI, E=24, H=hp["dkti_H"], seed=seed)
     return AKT(K, nI, E=hp["akt_E"], hid=32, seed=seed)
 
 
 def neural_cfg(name, hp):
-    return dict(lr=hp["dkt_lr"] if name == "DKT" else hp["akt_lr"], epochs=hp.get("epochs", 40),
+    lr = {"DKT": hp.get("dkt_lr"), "DKT-item": hp.get("dkti_lr"), "AKT": hp.get("akt_lr")}[name]
+    return dict(lr=lr, epochs=hp.get("epochs", 40),
                 bs=64, patience=5, wd=1e-5, win_per_epoch=hp.get("win_per_epoch", 6000))
 
 
