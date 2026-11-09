@@ -2,7 +2,7 @@
 |---|---|
 | Learners and items | 3,000 learners × 60 interactions per replicate; 200 items in 10 skills; five replicates (seeds 1–5); separate development replicate (seed 9001) for hyperparameters |
 | Splits (by learner) | Training 60% (1,800), validation 15% (450), calibration 10% (300), test 15% (450) |
-| Target events | Events 50–59 of each test learner (4,500 per replicate), identical for every condition |
+| Target events | Events 50–59 of each test learner (events numbered 0–59, so the last ten responses; 4,500 per replicate), identical for every condition |
 | Generators | Synthetic-KT-A: two-state learning, forgetting, guessing, slipping (Eq. 1). Synthetic-KT-B: dynamic item response process with asymptotes (Eq. 2) |
 | Guess g / slip s | Centre (0.20, 0.15); g = 0.10, 0.30 with s = 0.15; s = 0.05, 0.25 with g = 0.20 |
 | History length L | 3, 5, 10, 20, 50 (centre configuration); 3, 10, 50 (other configurations) |

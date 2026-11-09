@@ -5,7 +5,7 @@ TABLE1 = [
     ["Component", "Setting"],
     ["Learners and items", "3,000 learners × 60 interactions per replicate; 200 items in 10 skills; five replicates (seeds 1–5); separate development replicate (seed 9001) for hyperparameters"],
     ["Splits (by learner)", "Training 60% (1,800), validation 15% (450), calibration 10% (300), test 15% (450)"],
-    ["Target events", "Events 50–59 of each test learner (4,500 per replicate), identical for every condition"],
+    ["Target events", "Events 50–59 of each test learner (events numbered 0–59, so the last ten responses; 4,500 per replicate), identical for every condition"],
     ["Generators", "Synthetic-KT-A: two-state learning, forgetting, guessing, slipping (Eq. 1). Synthetic-KT-B: dynamic item response process with asymptotes (Eq. 2)"],
     ["Guess g / slip s", "Centre (0.20, 0.15); g = 0.10, 0.30 with s = 0.15; s = 0.05, 0.25 with g = 0.20"],
     ["History length L", "3, 5, 10, 20, 50 (centre configuration); 3, 10, 50 (other configurations)"],
@@ -30,9 +30,9 @@ TABLE4_NOTE_A = ("Panel A. DKT-item = DKT with skill inputs and one output per i
 TABLE4_TITLE_B = "Panel B. Three visible events (L = 3, η = 0): mean offset and ECE (means over five replicates)."
 TABLE4_NOTE_B = ("Panel B. Mean offset = mean predicted probability minus observed proportion correct (negative = under-prediction). "
                  "Truncated: targets are events 50–59 and only the three events before each target are visible (test-only models). "
-                 "Complete: the target is event 3 of each test learner, whose three earlier events are the complete record. "
+                 "Complete: the target is event 3 of each test learner (its fourth response; events are numbered from 0), and events 0–2 are its complete record. "
                  "Matched and Position-matched: window loss with three history events and training targets at events 3–59 or at "
-                 "events 50–59 (neural models only; – = not applicable). ECE columns refer to the test-only models on truncated "
+                 "events 50–59 (neural models only; a dash marks cells that do not apply). ECE columns refer to the test-only models on truncated "
                  "windows: Raw = unscaled; TS = temperature scaling; Platt = Platt scaling; target = fitted on calibration windows of "
                  "the same condition; ref = fitted on clean L = 50 windows.")
 T4_MODELS_A = ["DKT", "DKT-item", "AKT"]
